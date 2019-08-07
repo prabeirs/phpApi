@@ -1,0 +1,46 @@
+Originally one table layout was there as in (A) , then dropped one column as in (B) and added a constraint to the same column re-adding it as in (C).
+
+(A)
+create table Recipe ( id integer unique not null, name varchar (50) not null, prep_time interval not null, difficulty integer not null, vegetarian boolean not null);
+CREATE TABLE
+hellofresh=# \d
+         List of relations
+ Schema |  Name  | Type  |  Owner   
+--------+--------+-------+----------
+ public | recipe | table | postgres
+(1 row)
+
+hellofresh=# \d Recipe
+             Table "public.recipe"
+   Column   |         Type          | Modifiers 
+------------+-----------------------+-----------
+ id         | integer               | not null
+ name       | character varying(50) | not null
+ prep_time  | interval              | not null
+ difficulty | integer               | not null
+ vegetarian | boolean               | not null
+Indexes:
+    "recipe_id_key" UNIQUE CONSTRAINT, btree (id)
+
+(B)
+hellofresh=# alter table recipe drop column id;
+ALTER TABLE
+hellofresh=# \dt recipe
+         List of relations
+ Schema |  Name  | Type  |  Owner   
+--------+--------+-------+----------
+ public | recipe | table | postgres
+(1 row)
+
+(C)
+hellofresh=# alter table recipe add column id serial;
+ALTER TABLE
+hellofresh=# \d recipe
+                                  Table "public.recipe"
+   Column   |         Type          |                      Modifiers                      
+------------+-----------------------+-----------------------------------------------------
+ name       | character varying(50) | not null
+ prep_time  | interval              | not null
+ difficulty | integer               | not null
+ vegetarian | boolean               | not null
+ id         | integer               | not null default nextval('recipe_id_seq'::regclass)
